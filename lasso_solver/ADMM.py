@@ -23,7 +23,7 @@ class ADMM(object):
         self.regularization_changed_flag = []
 
     @numba.jit(nogil=True)
-    def solve(self, max_iteration=1000, tol=1e-3):
+    def solve(self, max_iteration=1000, tol=1e-3, message=False):
         """ solver """
         convergence_flag = False
         diff = 999999
@@ -41,9 +41,10 @@ class ADMM(object):
             diff = max(np.abs(pre_x - self.x))
             if diff < tol and iteration_index > 3:
                 convergence_flag = True
-                print("converged")
-                print("diff = {0}".format(diff))
-                print("iteration num = {0}".format(iteration_index + 1))
+                if message:
+                    print("converged")
+                    print("diff = {0}".format(diff))
+                    print("iteration num = {0}".format(iteration_index + 1))
                 break
 
         if not convergence_flag:
